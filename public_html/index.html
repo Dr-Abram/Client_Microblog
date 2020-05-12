@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Microblog</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+
+        <script>
+            function showList(address) {
+                document.getElementById("risultato-raw").innerHTML = "";
+                document.getElementById("risultato").innerHTML = "starting..";
+
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {  // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlhttp.onreadystatechange = function () {
+
+                    if (this.readyState === 4 && this.status === 200) {
+                        visualJson(this.responseText);
+
+                    } else
+                        document.getElementById("risultato").innerHTML = "doing..";
+
+                }
+                xmlhttp.open("GET", address, true);
+                xmlhttp.send();
+            }
+
+            function visualJson(json) {
+                document.getElementById("risultato-raw").innerHTML = json;
+                var parsedJson = JSON.parse(json);
+                var output = '<div> Codice di risposta http: ' + parsedJson.server;
+                var table = '<table><tr><th>Id</th><th>Username</th><th>Email</th><th>Password</th></tr>';
+                for (i = 0; i < parsedJson.response.length; i++) {
+                    table += "<tr><td>" +
+                            parsedJson.response[i].id + "</td><td>" +
+                            parsedJson.response[i].username + "</td><td>" +
+                            parsedJson.response[i].email + "</td><td>" +
+                            parsedJson.response[i].password + "</td></tr>";
+                }
+                table += "</table>";
+                document.getElementById("risultato").innerHTML = output + table;
+            }
+
+
+        </script>
+
+    </head>
+
+    <body>
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-10">
+                    <h2 class="text-center mb-5"></h2>
+                    <ul class="nav nav-fill">
+                        <a class="nav-item"><h1>Microblog</h1></a>
+                        <a class="nav-item" href="login.html"><h2>Login</h2></a>
+                        <a class="nav-item" href="registration.html"><h2>Registration</h2></a>
+                    </ul>                    
+                </div>
+                <!--/col-->
+            </div>
+            
+            <div class="col-md-10" id="risultato-raw"></div>
+            <div class="col-md-10" id="risultato"></div>
+
+        </div>
+        <!--/container-->
+        <script src="jquery-3.5.1.min.js"></script>
+        <script src="../public/js/bootstrap.min.js"></script>
+    </body>
+</html>
+
