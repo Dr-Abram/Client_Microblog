@@ -7,7 +7,7 @@
         <script>
             function loadUtenti() {
                 xhr = new XMLHttpRequest();
-                var url = "http://localhost:8085/users";
+                var url = "http://localhost:8084/users";
                 xhr.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         decode_json_user(this.responseText);
@@ -50,7 +50,7 @@
 
             function deleteUtenti(id) {
                 xhr = new XMLHttpRequest();
-                var url = "http://localhost:8085/users/" + id;
+                var url = "http://localhost:8084/users/" + id;
                 xhr.open("DELETE", url, true);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
@@ -74,7 +74,7 @@
 
             function insertUtenti() {
                 xhr = new XMLHttpRequest();
-                var url = "http://localhost:8085/users";
+                var url = "http://localhost:8084/users";
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader("Content-type", "application/json");
                 xhr.withCredentials = false;
