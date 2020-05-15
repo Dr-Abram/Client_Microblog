@@ -1,0 +1,145 @@
+<html>
+    <head> 
+        <title>MENU UTENTI</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/css/bootstrap.min.css">
+        <script>
+            function loadUtenti() {
+                xhr = new XMLHttpRequest();
+                var url = "http://localhost:8085/users";
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        decode_json_user(this.responseText);
+                        document.getElementById("messages").innerHTML = "Operazione eseguita.";
+                    }
+                };
+                xhr.open("GET", url, true);
+                xhr.send();
+            }
+
+            function decode_json_user(data) {
+                var r = "";
+                var parsedJson = JSON.parse(data);
+                for (var i = 0; i < parsedJson.response.length; i++) {
+                    r += (parsedJson.response[i].username + " " +
+                            " <button onclick='deleteUtenti(" + parsedJson.response[i].id +
+                            ");'>Cancella</button><br><br>"); //delete al momento non implementata lato server
+                }
+
+
+                /**
+                 * 
+                 * @param {type} id
+                 * @returns {undefined}
+                 */
+                /*
+                 function decode_json_user(data) {
+                 var r = "";
+                 table = "";
+                 var parsedJson = JSON.parse(data);
+                 for (var i = 0; i < parsedJson.response.length; i++) {
+                 r += ""(parsedJson.response[i].username + " " + parsedJson.response[i].email + " " + parsedJson.response[i].password +
+                 " <button onclick='deleteUtenti(" + parsedJson.response[i].id +
+                 ");'>Cancella</button><br><br>"); //delete al momento non implementata lato server
+                 }
+                 */
+
+                document.getElementById("utenti").innerHTML = r;
+            }
+
+            function deleteUtenti(id) {
+                xhr = new XMLHttpRequest();
+                var url = "http://localhost:8085/users/" + id;
+                xhr.open("DELETE", url, true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        switch (xhr.status) {
+                            case 204:
+                                //document.getElementById("messages").innerHTML = "Cancellato";
+                                loadUtenti(); //se cancellato ricarico la lista degli utenti
+                                break;
+                            case 404:
+                                document.getElementById("messages").innerHTML = "Errore 404";
+                                break;
+                            default:
+                                document.getElementById("messages").innerHTML = "Non eseguito.";
+                        }
+                    }
+                };
+                xhr.send();
+            }
+
+
+
+            function insertUtenti() {
+                xhr = new XMLHttpRequest();
+                var url = "http://localhost:8085/users";
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.withCredentials = false;
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        switch (xhr.status) {
+                            case 201:
+                                // var frm = document.querySelector('[name="f1"]');
+                                document.getElementById("username").value = "";
+                                document.getElementById("email").value = "";
+                                document.getElementById("password").value = "";
+                                // var location = xhr.getResponseHeader('location'); da implementare
+                                // document.getElementById("messages").innerHTML = "Inserimento eseguito.";
+                                loadUtenti(); //se inserito ricarico la lista degli utenti
+                                break;
+                            case 404:
+                                document.getElementById("messages").innerHTML = "Errore 404 ";
+                                break;
+                            default:
+                                document.getElementById("messages").innerHTML = "Non eseguito.";
+                        }
+                    }
+                };
+
+                // var frm = document.querySelector('[name="f1"]');
+                //   var data = JSON.stringify({"username":frm.elements["username"].value,
+                //                           "email":frm.elements["email"].value,
+                //                           "password":frm.elements["password"].value 
+                //   });
+                var data = JSON.stringify({
+                    "username": document.getElementById("username").value,
+                    "email": document.getElementById("email").value,
+                    "password": document.getElementById("password").value
+                });
+                xhr.send(data);
+            }
+        </script>
+    </head>
+
+    <body onload="loadUtenti();">
+        <div class="container py-5">
+            <ul class="nav nav-fill">
+                <a class="nav-item"><h2>Benvenuto</h2></a>
+                <a class="nav-item" href="index.html"><h2>Utenti</h2></a>
+                <a class="nav-item"><button type="button" class="btn btn-success btn-lg" onclick="loadUtenti();">Carica utenti</button></a> <!--(esegue una GET sulla collezione /utenti)-->
+                <p id="messages"></p><br>
+            </ul><br>
+            <!-- form name="f1"  accept-charset="utf-8" -->
+            <div class="card card-outline-secondary">
+                <div class="card-body">
+                    <label for="Username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"><br>
+                    <label for="Email">Email:</label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="Email"><br>
+                    <label for="Password">Password:</label>
+                    <input type="password" class="form-control pwd" id="password" name="password" placeholder="Password"><br>
+                    <!-- /form -->
+
+                </div>
+
+            </div><br>
+            <div class="container" id="utenti"></div>
+            <script src="jquery-3.5.1.min.js"></script>
+            <script src="style/js/bootstrap.min.js"></script>
+            
+        </div>
+    </body>
+</html>
