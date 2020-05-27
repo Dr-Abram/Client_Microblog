@@ -11,7 +11,7 @@
                 xhr.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
                         decode_json_post(this.responseText);
-                        document.getElementById("messages").innerHTML = "Sucess.";
+                        document.getElementById("messages").innerHTML = "Sucess";
                     }
                 };
                 xhr.open("GET", url, true);
@@ -94,7 +94,7 @@
     <body onload="loadPosts();">
         <div class="container py-5">
             <ul class="nav nav-fill">
-                <a class="nav-item"><h2>Wellcome</h2></a>
+                
                 <a class="nav-item" href="index.html"><h2>HOME</h2></a>
                 <a class="nav-item"><button type="button" class="btn btn-secondary btn-lg" onclick="loadPosts();">Load posts</button></a> <!--(esegue una GET sulla collezione /posts)-->
                 <p id="messages"></p><br>
