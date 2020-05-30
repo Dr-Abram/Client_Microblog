@@ -22,10 +22,10 @@
                 var r = '<div class="container">';
                 var parsedJson = JSON.parse(data);
                 for (var i = 0; i < parsedJson.response.length; i++) { //<div class="container"><div class="row">
-                        r += ('<div class="row"><div class="col">'+parsedJson.response[i].username + " " + '</div><div class="col"><button type="button" class="btn btn-danger btn-lg"' +
-                                " onclick='deleteUtenti(" + parsedJson.response[i].id +
-                            ");'>Delete</button></div></div><br>"); 
-                    }
+                    r += ('<div class="row"><div class="col">' + parsedJson.response[i].username + " " + '</div><div class="col"><button type="button" class="btn btn-danger btn-lg"' +
+                            " onclick='deleteUtenti(" + parsedJson.response[i].id +
+                            ");'>Delete</button></div></div><br>");
+                }
 
                 document.getElementById("utenti").innerHTML = r + '</div>';
             }
@@ -91,12 +91,12 @@
     <body onload="loadUtenti();">
         <div class="container py-5">
             <ul class="nav nav-fill">
-                
+
                 <a class="nav-item" href="index.html"><h2>HOME</h2></a>
                 <a class="nav-item"><button type="button" class="btn btn-secondary btn-lg" onclick="loadUtenti();">Load users</button></a> <!--(esegue una GET sulla collezione /utenti)-->
                 <p id="messages"></p><br>
             </ul><br>
-            
+
             <!-- form name="f1"  accept-charset="utf-8" -->
             <div class="card card-outline-secondary">
                 <div class="card-header">
