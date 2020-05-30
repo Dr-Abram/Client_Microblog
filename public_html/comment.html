@@ -19,6 +19,7 @@
             }
 
             function decode_json_comment(data) {
+                var deb = alert(data);
                 var r = '<div class="container">';
                 var parsedJson = JSON.parse(data);
                 for (var i = 0; i < parsedJson.response.length; i++) {
@@ -26,7 +27,7 @@
                             " onclick='deleteComment(" + parsedJson.response[i].id +
                             ");'>Delete</button></div></div><br>");
                 }
-                document.getElementById("comments").innerHTML = r;
+                document.getElementById("comments").innerHTML = r + '</div>';
             }
 
             function deleteComment(id) {
@@ -55,6 +56,7 @@
 
             function insertComments() {
                 xhr = new XMLHttpRequest();
+                //var deb__ = alert(xhr);
                 var url = "http://localhost:8084/api/comments";
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader("Content-type", "application/json");
@@ -83,7 +85,7 @@
                 var data = JSON.stringify({
                     "titleC": document.getElementById("titleC").value,
                     "content": document.getElementById("content").value,
-                    "post": {"title": document.getElementById("post").value},
+                    "post": {"id": document.getElementById("post").value},
                     "user": {"id": document.getElementById("autore").value}
                 });
                 //var p = alert(data);
@@ -119,7 +121,7 @@
                         </div>
                         <div class="col">
                             <label for="post"><p class="font-weight-bold">Post</p></label>
-                            <input type="text" class="form-control" name="post" id="autore" placeholder="here Post title" required="true">
+                            <input type="number" class="form-control" name="post" id="post" placeholder="here Post ID" required="true">
                         </div>
                     </div><br>
                     <div class="form-group">
